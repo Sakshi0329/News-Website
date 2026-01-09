@@ -21,15 +21,11 @@ const NewsBoard = ({ category }) => {
 
         const data = await response.json();
 
-        // Safety check
-        if (data.articles && Array.isArray(data.articles)) {
-          setArticles(data.articles);
-        } else {
-          setArticles([]);
-        }
+        // Ensure articles is an array
+        setArticles(Array.isArray(data.articles) ? data.articles : []);
       } catch (err) {
         console.error(err);
-        setError("Failed to fetch news. Please try again later.");
+        setError("Failed to fetch news. Please check your API key or network.");
         setArticles([]);
       } finally {
         setLoading(false);
@@ -48,6 +44,7 @@ const NewsBoard = ({ category }) => {
       {loading && <p className="text-center">Loading news...</p>}
       {error && <p className="text-center text-danger">{error}</p>}
 
+      {/* Render articles as before */}
       {articles?.map((news, index) => (
         <NewsItem
           key={index}
